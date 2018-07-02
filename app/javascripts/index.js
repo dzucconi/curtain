@@ -14,9 +14,13 @@ const CONFIG = parameters({
   size: 2,
   gap: 2,
   axes: ['x', 'y'],
+  fps: 60,
+  bgcolor: 'black',
 });
 
 const init = () => {
+  DOM.app.style.backgroundColor = CONFIG.bgcolor;
+
   const width = DOM.app.width = window.innerWidth;
   const height = DOM.app.height = window.innerHeight;
 
@@ -27,21 +31,26 @@ const init = () => {
 
   const map = i => CONFIG.size * i * CONFIG.gap;
 
-  const yMapping = times(nY)(map);
-  const xMapping = times(nX)(map);
+  const mapping = {
+    x: times(nX)(map),
+    y: times(nY)(map),
+  };
 
-  fps(requestAnimationFrame)(60, (i) => {
-    if (CONFIG.axes.includes('y')) {
-      const y = yMapping[i % yMapping.length];
+  const draw = {
+    x: p => {
       ctx.fillStyle = randomColor();
-      ctx.fillRect(0, y, width, CONFIG.size);
+      ctx.fillRect(p, 0, CONFIG.size, height);
+    },
+    y: p => {
+      ctx.fillStyle = randomColor();
+      ctx.fillRect(0, p, width, CONFIG.size);
     }
+  };
 
-    if (CONFIG.axes.includes('x')) {
-      const x = xMapping[i % xMapping.length];
-      ctx.fillStyle = randomColor();
-      ctx.fillRect(x, 0, CONFIG.size, height);
-    }
+  fps(requestAnimationFrame)(CONFIG.fps, () => {
+    CONFIG.axes.forEach(axis => {
+      mapping[axis].forEach(draw[axis]);
+    });
   })();
 };
 
