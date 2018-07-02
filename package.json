@@ -1,11 +1,11 @@
 {
-  "name": "repeater",
+  "name": "curtain",
   "description": "",
   "author": "Damon Zucconi",
   "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dzucconi/repeater"
+    "url": "https://github.com/dzucconi/curtain"
   },
   "scripts": {
     "test": "mocha test",
