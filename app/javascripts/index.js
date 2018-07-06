@@ -16,6 +16,7 @@ const CONFIG = parameters({
   axes: ['x', 'y'],
   fps: 60,
   bgcolor: 'black',
+  density: 0.1,
 });
 
 const init = () => {
@@ -49,7 +50,10 @@ const init = () => {
 
   fps(requestAnimationFrame)(CONFIG.fps, () => {
     CONFIG.axes.forEach(axis => {
-      mapping[axis].forEach(draw[axis]);
+      mapping[axis].forEach((p) => {
+        if (Math.random() > CONFIG.density) return;
+        draw[axis](p);
+      });
     });
   })();
 };
